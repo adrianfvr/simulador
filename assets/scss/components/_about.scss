@@ -1,9 +1,23 @@
 // About
 .about {
+    padding-top: 0;
     &__container {
         gap: 2.5rem;
     }
     &__data {
         text-align: center;
     }
+}
+.MathJax{
+    text-align: left !important;
+}
+.xddd {
+    min-width: 80% !important;
+}
+.MJX-TEX {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem 2px;
 }

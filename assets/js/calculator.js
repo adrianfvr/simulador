@@ -8,7 +8,17 @@ const table = document.getElementById("calculator-table"),
   chargesSelect = document.getElementById("charges-select"),
   btnCalc = document.querySelector(".calculator__btn-calc"),
   chargeUnits = ["C", "μC", "nC", "mC"],
-  distanceUnits = ["m", "cm", "mm", "km"];
+  distanceUnits = ["m", "cm", "mm", "km"],
+  valores = {
+    C: 1,
+    μC: 1 * Math.pow(10, -6),
+    nC: 1 * Math.pow(10, -9),
+    mC: 1 * Math.pow(10, -3),
+    m: 1,
+    cm: 1/100,
+    mm: 1/1000,
+    km: 1000
+  };
 
 let idCharge = 0,
   idRow = 1,
@@ -25,12 +35,17 @@ window.addEventListener("load", () => {
 addBtn.addEventListener("click", () => {
   createColumn();
   verify();
+  let span = document.querySelector(".res");
+  span.textContent = "0 N";
+
 });
 
 removeBtn.addEventListener("click", () => {
   deleteColumn();
   verify();
   createDistance(selectedChargeValue);
+  let span = document.querySelector(".res");
+  span.textContent = "0 N";
 });
 
 chargesSelect.addEventListener("change", () => {
@@ -54,7 +69,7 @@ const calcular = () => {
   chargesDiv.forEach((charge) => {
     let obj = {
       [charge.children[0].name]: charge.children[0].value,
-      [charge.children[1].name]: charge.children[1].value
+      [charge.children[1].name]: charge.children[1].value,
     };
     data.push(obj);
   });
@@ -62,39 +77,80 @@ const calcular = () => {
   distancesDiv.forEach((distance) => {
     let obj = {
       [distance.children[1].name]: distance.children[1].value,
-      [distance.children[2].name]: distance.children[2].value
-    }
+      [distance.children[2].name]: distance.children[2].value,
+    };
     distances.push(obj);
-  })
+  });
   console.log(data);
   console.log(distances);
 
-  distances.splice(cargaSeleccionada-1, 0 , {});
+  distances.splice(cargaSeleccionada - 1, 0, {});
   console.log(distances);
 
-
-  for(let i = 0; i < distances.length; i++) {
+  for (let i = 0; i < distances.length; i++) {
     let carga1 = data[cargaSeleccionada - 1],
       carga2 = data[i],
       distance = distances[i];
-    fuerza += leyCoulomb(carga1, carga2, distance);
+    fuerza += leyCoulomb(carga1, carga2, distance, i, cargaSeleccionada);
+    console.log("Acumulado: " + fuerza);
   }
 
-  console.log(fuerza);
+  console.log("Fuerza Total: " + fuerza);
+  mostrarRespuesta(fuerza);
 };
+const mostrarRespuesta = (num) => {
+  // let res = Number(number.toFixed(3)),
+  // res2 = res.toExponential(),
+  let span = document.querySelector(".res");
+  // span.textContent = res2 + ' N';
+  // console.log(res2);
 
-const leyCoulomb = (carga1, carga2, distance) => {
-  if (carga1 === carga2) return 0;
-  return ((8.99*(10**9))*(eval(carga1.value))*(eval(carga2.value)))/(eval(distance.value))**2;
+  // Convertir a notación científica si la parte entera tiene más de 4 dígitos
+  if (Math.abs(num) >= 10000) {
+    num = num.toExponential(3);
+    // Limitar el número total de dígitos a 6
+    num = parseFloat(num);
+    if (Math.abs(num) >= 1e6) {
+        num = Math.round(num / Math.pow(10, Math.floor(Math.log10(Math.abs(num))) - 2)) * Math.pow(10, Math.floor(Math.log10(Math.abs(num))) - 2);
+    }
+  span.textContent = num.toExponential(3) + " N";
+} else {
+    // Redondear a tres decimales si la parte entera tiene 4 dígitos o menos
+span.textContent =  num.toFixed(3) + " N";
 }
-
-
-
-
-
-
-
-
+}
+const leyCoulomb = (carga1, carga2, distance, i, chargeIndex) => {
+  if (carga1 === carga2) return 0;
+  // let carga1 = eval(carga1.value) * eval(valores[carga1.unit]);
+  // let carga2 = eval(carga2.value) * eval(valores[carga2.unit]);
+  // let distance = eval(distance.value) * eval(valores[distance.unit]);
+  let force =
+    (8.99 *
+      Math.pow(10, 9) *
+      Math.abs(eval(carga1.value) * valores[carga1.unit] * eval(carga2.value) * valores[carga2.unit])) /
+    Math.pow(eval(distance.value) * valores[distance.unit], 2);
+  if (eval(carga1.value) > 0) {
+    console.log("Carga principal mayor a 0");
+    if (
+      (i < chargeIndex - 1 && eval(carga2.value) < 0) ||
+      (i > chargeIndex - 1 && eval(carga2.value) > 0)
+    ) {
+      console.log("Apunta a la izquierda (Fuerza negativa)");
+      force = force * -1;
+    }
+  } else {
+    console.log("Carga principal menor a 0");
+    if (
+      (i < chargeIndex - 1 && eval(carga2.value) > 0) ||
+      (i > chargeIndex - 1 && eval(carga2.value) < 0)
+    ) {
+      console.log("Apunta a la izquierda (Fuerza negativa)");
+      force = force * -1;
+    }
+  }
+  console.log("Signo fuerza: " + force);
+  return force;
+};
 
 const updateChargeSelect = () => {
   selectedChargeValue = chargesSelect.value;

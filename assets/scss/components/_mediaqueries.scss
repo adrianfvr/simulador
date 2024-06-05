@@ -14,7 +14,60 @@
         grid-template-columns: max-content;
     }
 };
+@media screen and (min-width: 720px) {
+    .services__container{
+        grid-template-columns: 1fr;
+        
+    }
+    .calculator > h3{
+        text-align: center;
+    }
+}
+@media screen and (max-width: 720px) {
+    .calculator > h3{
+        text-align: initial;
+    }
+    .calculator__btn-calc {
+        margin: 1rem 0;
+    }
+    .calculator__title {
+        font-size: 1rem;
+    }
+    .calculator__column, .calculator__select-charge-1, .calculator__distance {
+        font-size: 0.8rem;
+    }
+    .calculator__input-charge {
+        font-size: 0.7rem;
+    }
+}
 // For Medium Devices
+@media screen and (max-width: 576px) {
+    .skills__container {
+        flex-direction: column;
+    }
+    .skills__container > svg {
+        width: 300px;
+    }
+    .skills__tools {
+        justify-content: center;
+    }
+    .calculator__table-container {
+        display: flex;
+        align-items: start;
+        justify-content: start;
+        flex-direction: column;
+    }
+    .calculator__strength {
+        row-gap: 1rem;
+        flex-direction: column;
+        align-items: start;
+        justify-content: start;
+    }
+    .about__img {
+        height: 300px;
+    }
+
+}
 @media screen and (min-width: 576px) {
     .svg__img {
         width: 100%;
@@ -25,7 +78,6 @@
     .home__container, 
     .about__container,
     .security__container,
-    .services__container,
     .app__container,
     .contact__container,
     .calculator__container,
@@ -53,6 +105,22 @@
     .app__img {
         order: -1;
     }
+    .about__img {
+        height: 300px;
+        justify-self: center;
+    }
+    // .calculator__title {
+    //     font-size: 1rem;
+    // }
+    // .calculator__column, .calculator__select-charge-1, .calculator__distance {
+    //     font-size: 0.8rem;
+    // }
+    // .calculator__input-charge {
+    //     font-size: 0.7rem;
+    // }
+    .home {
+        height: auto;
+    }    
 }
 @media screen and (min-width: 767px) {
     body {
@@ -77,6 +145,19 @@
     .app__buttons {
         justify-content: initial;
     }
+    .services__container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    // .calculator__title {
+    //     font-size: 1rem;
+    // }
+    // .calculator__column, .calculator__select-charge-1, .calculator__distance {
+    //     font-size: 0.8rem;
+    // }
+    // .calculator__input-charge {
+    //     font-size: 0.7rem;
+    // }
 }
 // For Large Devices
 @media screen and (min-width: 968px) {
@@ -92,9 +173,7 @@
     .contact__container {
         column-gap: 6rem;
     }
-    .services__container {
-        grid-template-columns: repeat(3, 1fr);
-    }
+    
     .contact__container {
         grid-template-columns: 3fr 1.5fr 1.25fr;
     }
@@ -108,6 +187,16 @@
                 font-size: 1.45rem;
             }
         }
+    }
+    .services__container {
+        padding: 1rem 7rem 0;
+    }
+    .home {
+        height: 100vh;
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 @media screen and (min-width: 968px) {

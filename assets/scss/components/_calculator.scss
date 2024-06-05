@@ -1,5 +1,6 @@
 /* CALCULATOR */
 .calculator {
+  margin-bottom: 3rem;
   &__container {
     display: flex;
     flex-direction: column;
@@ -133,5 +134,13 @@
     height: auto;
     font-size: 0.8rem;
     margin: 0 .3rem;
+  }
+  &__strength {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  & > h3 {
+    text-align: center;
   }
 }
